@@ -1,0 +1,174 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Memberi padding atas seukuran navbar agar konten tidak tertutup */
+    padding-top: 70px; 
+}
+
+/* --- Navbar Styling --- */
+#mainNavbar {
+    background-color: transparent;
+    transition: background-color 0.4s ease-in-out;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+
+#mainNavbar.navbar-scrolled {
+    background-color: #000; /* Warna solid saat di-scroll */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+}
+
+.nav-link {
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #e50914 !important; /* Netflix Red */
+}
+
+
+/* --- Movie Card Styling --- */
+.movie-card {
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    background-color: #222;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(229, 9, 20, 0.4);
+}
+
+.movie-card img {
+    aspect-ratio: 2/3; /* Jaga rasio poster film */
+    object-fit: cover;
+}
+
+.movie-card .card-title {
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* --- Movie Detail Page Styling --- */
+.movie-detail-container {
+    background-size: cover;
+    background-position: center center;
+    padding: 60px 0;
+    position: relative;
+    min-height: 80vh; /* Minimal tinggi agar gambar background terlihat */
+    display: flex;
+    align-items: center;
+}
+
+.movie-poster-detail {
+    max-width: 100%;
+    border-radius: 12px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.movie-detail-container h1,
+.movie-detail-container .lead,
+.movie-detail-container p {
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); /* Tambah bayangan agar teks terbaca */
+}
+
+
+/* --- Watch Page Styling --- */
+.watch-container {
+    width: 100%;
+    height: 100vh; /* Player mengisi seluruh tinggi layar */
+    background-color: #000;
+}
+
+/* Styling untuk Plyr.io Player */
+.plyr {
+    width: 100%;
+    height: 100%;
+    --plyr-color-main: #e50914; /* Warna utama player (Netflix Red) */
+}
+
+
+/* --- Profile Page Styling --- */
+.profile-card {
+    background-color: #1c1c1c; /* Warna dark-grey, sedikit lebih terang dari background */
+    border: 1px solid #333;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #e50914; /* Border merah khas Netflix */
+}
+
+.setting-block {
+    background-color: #1c1c1c;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    margin-bottom: 25px;
+}
+
+.setting-block h5 {
+    color: #e50914;
+    margin-bottom: 20px;
+}
+
+/* admin dashboard */
+#wrapper {
+    display: flex;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 250px;
+    transition: margin .25s ease-out;
+}
+
+#page-content-wrapper {
+    flex: 1;
+}
+
+.list-group-item {
+    border: none;
+    border-top: 1px solid #333 !important;
+    border-bottom: 1px solid #333 !important;
+}
+
+.list-group-item:hover, .list-group-item:focus {
+    background-color: #e50914 !important; /* Netflix Red */
+    color: white !important;
+}
+
+/* --- Perbaikan Layout Halaman Kosong --- */
+.main-content {
+    /* Minimal tinggi 75% dari tinggi layar */
+    min-height: 75vh; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Styling untuk Pesan Placeholder --- */
+.placeholder-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #6c757d; /* Warna abu-abu sekunder */
+    font-size: 1.2rem;
+}

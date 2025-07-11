@@ -1,0 +1,47 @@
+#wrapper {
+    display: flex;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 250px;
+    transition: margin .25s ease-out;
+}
+
+#page-content-wrapper {
+    flex: 1;
+}
+
+.list-group-item {
+    border: none !important;
+    border-top: 1px solid #333 !important;
+}
+
+.list-group-item:last-child {
+     border-bottom: 1px solid #333 !important;
+}
+
+.list-group-item:hover, .list-group-item:focus {
+    background-color: #e50914 !important; /* Netflix Red */
+    color: white !important;
+}
+
+/* Style untuk form di admin panel */
+.form-control {
+    background-color: #333;
+    color: white;
+    border-color: #444;
+}
+
+.form-control:focus {
+    background-color: #444;
+    color: white;
+    border-color: #e50914;
+    box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25);
+}
+
+.form-select {
+    background-color: #333;
+    color: white;
+    border-color: #444;
+}
