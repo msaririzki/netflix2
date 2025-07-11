@@ -4,8 +4,6 @@ include 'templates/header.php';
 require_once '../config/database.php';
 
 // Query untuk mendapatkan film paling banyak ditonton
-// Kita menghitung berapa kali setiap video_id muncul di tabel history,
-// lalu menggabungkannya dengan tabel videos untuk mendapatkan judulnya.
 $query = "
     SELECT 
         v.title,
@@ -23,13 +21,19 @@ $query = "
 
 $result = $connect->query($query);
 
-// Temukan jumlah tontonan tertinggi untuk kalkulasi persentase progress bar
-$max_views = 0;
+// Ambil semua hasil ke dalam sebuah array
+$films = [];
 if ($result->num_rows > 0) {
-    // Clone result untuk iterasi terpisah tanpa mengganggu pointer utama
-    $clone_result = clone $result;
-    $first_row = $clone_result->fetch_assoc();
-    $max_views = $first_row['view_count'] ?? 1; // Default 1 untuk hindari pembagian oleh nol
+    while ($row = $result->fetch_assoc()) {
+        $films[] = $row;
+    }
+}
+
+// Temukan jumlah tontonan tertinggi dari array
+$max_views = 0;
+if (!empty($films)) {
+    // Nilai tertinggi adalah view_count dari elemen pertama
+    $max_views = $films[0]['view_count'];
 }
 
 ?>
@@ -41,12 +45,13 @@ if ($result->num_rows > 0) {
         <h5 class="m-0">Top 10 Most Watched Films</h5>
     </div>
     <div class="card-body">
-        <?php if ($result->num_rows > 0): ?>
+        <?php if (!empty($films)): ?>
             <ul class="list-group list-group-flush">
-                <?php while ($film = $result->fetch_assoc()): ?>
+                <?php foreach ($films as $film): ?>
                     <?php
                         // Hitung persentase untuk lebar progress bar
-                        $percentage = ($film['view_count'] / $max_views) * 100;
+                        // Pastikan max_views tidak nol untuk menghindari pembagian oleh nol
+                        $percentage = ($max_views > 0) ? ($film['view_count'] / $max_views) * 100 : 0;
                     ?>
                     <li class="list-group-item bg-transparent text-white">
                         <div class="row align-items-center">
@@ -56,7 +61,6 @@ if ($result->num_rows > 0) {
                             <div class="col-md-6">
                                 <div class="progress" style="height: 20px;">
                                     <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $percentage ?>%;" aria-valuenow="<?= $film['view_count'] ?>" aria-valuemin="0" aria-valuemax="<?= $max_views ?>">
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -65,7 +69,7 @@ if ($result->num_rows > 0) {
                             </div>
                         </div>
                     </li>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </ul>
         <?php else: ?>
             <p class="text-secondary text-center">No watch history data available yet.</p>
