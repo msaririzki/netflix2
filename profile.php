@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($update_stmt->execute()) {
                 $_SESSION['user_name'] = $new_name; // Update session juga
                 $message = "Nama berhasil diperbarui!";
-                $user['nama'] = $new_name; // Update variabel lokal untuk tampilan
+                $user['nama'] = $new_name;
             } else {
                 $error = "Gagal memperbarui nama.";
             }
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Proses Ganti Password (tambahkan validasi lebih lanjut jika perlu)
+    // Proses Ganti Password
     if (isset($_POST['update_password'])) {
         $new_password = $_POST['new_password'];
         $confirm_password = $_POST['confirm_password'];
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update_picture'])) {
         if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
             $file = $_FILES['profile_picture'];
-            $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
+            $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
             
             if (in_array($file['type'], $allowed_types)) {
                 $target_dir = "assets/images/profiles/";
@@ -77,11 +77,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $target_file = $target_dir . $file_name;
 
                 if (move_uploaded_file($file['tmp_name'], $target_file)) {
+                    // Path yang disimpan di DB tidak perlu '../'
+                    $db_path = $target_file; 
                     $update_stmt = $connect->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
-                    $update_stmt->bind_param("si", $target_file, $user_id);
+                    $update_stmt->bind_param("si", $db_path, $user_id);
                     if ($update_stmt->execute()) {
                         $message = "Foto profil berhasil diubah!";
-                        $user['profile_picture'] = $target_file; // Update untuk tampilan
+                        $user['profile_picture'] = $db_path; 
+                        
+                        // ===== INI BAGIAN PENTINGNYA =====
+                        // Perbarui session agar navbar langsung berubah
+                        $_SESSION['user_profile_picture'] = $db_path;
+
                     } else {
                         $error = "Gagal menyimpan path gambar ke database.";
                     }
@@ -90,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = "Gagal mengunggah file gambar.";
                 }
             } else {
-                $error = "Format file tidak didukung. Gunakan JPG, PNG, atau WEBP.";
+                $error = "Format file tidak didukung. Gunakan JPG, PNG, WEBP, atau GIF.";
             }
         } else {
             $error = "Pilih file gambar untuk diunggah.";
@@ -107,13 +114,13 @@ require_once 'templates/header.php';
         <div class="col-md-4 mb-4">
             <div class="card profile-card text-center" data-aos="fade-right">
                 <div class="card-body">
-                    <img src="<?= htmlspecialchars($user['profile_picture'] ?: 'assets/images/profiles/default.png') ?>" alt="Profile Picture" class="profile-picture mb-3">
+                    <img src="/<?= htmlspecialchars($user['profile_picture'] ?: 'assets/images/profiles/default.png') ?>" alt="Profile Picture" class="profile-picture mb-3">
                     <h4 class="card-title"><?= htmlspecialchars($user['nama']) ?></h4>
                     <p class="text-secondary"><?= htmlspecialchars($user['email']) ?></p>
                     <hr>
                     <form action="profile.php" method="POST" enctype="multipart/form-data">
                         <label for="profile_picture" class="form-label">Ganti Foto Profil</label>
-                        <input class="form-control form-control-sm bg-dark text-white mb-2" type="file" name="profile_picture" id="profile_picture" required>
+                        <input class="form-control form-control-sm bg-dark text-white mb-2" type="file" name="profile_picture" id="profile_picture" accept="image/*" required>
                         <button type="submit" name="update_picture" class="btn btn-sm btn-outline-danger">Upload</button>
                     </form>
                 </div>

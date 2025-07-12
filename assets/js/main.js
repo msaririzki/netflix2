@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
-    // Inisialisasi AOS (Animate on Scroll)
-    AOS.init({
-        duration: 800, // Durasi animasi
-        once: true,    // Animasi hanya berjalan sekali
-    });
+
+    // Inisialisasi AOS (Animate on Scroll) jika library-nya ada
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            once: true,
+        });
+    }
 
     // Logika untuk mengubah background navbar saat scroll
     const navbar = document.getElementById('mainNavbar');
@@ -19,11 +21,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
-
-
-// Inisialisasi Plyr.io Video Player
-// Cek apakah elemen dengan id 'player' ada di halaman
-const player = document.getElementById('player');
-if (player) {
-    new Plyr(player);
-}
