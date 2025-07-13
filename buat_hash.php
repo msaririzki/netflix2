@@ -1,6 +1,6 @@
 <?php
 // Ganti 'PasswordSuperAman123' dengan password yang Anda inginkan
-$password_untuk_admin = 'Ndekutaok'; 
+$password_untuk_admin = 'admin123'; 
 
 $hash = password_hash($password_untuk_admin, PASSWORD_DEFAULT);
 

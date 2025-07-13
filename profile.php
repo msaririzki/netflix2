@@ -114,7 +114,7 @@ require_once 'templates/header.php';
         <div class="col-md-4 mb-4">
             <div class="card profile-card text-center" data-aos="fade-right">
                 <div class="card-body">
-                    <img src="/<?= htmlspecialchars($user['profile_picture'] ?: 'assets/images/profiles/default.png') ?>" alt="Profile Picture" class="profile-picture mb-3">
+                    <img src="/<?= htmlspecialchars($user['profile_picture'] ?: 'assets/images/profiles/default.jpeg') ?>" alt="Profile Picture" class="profile-picture mb-3">
                     <h4 class="card-title"><?= htmlspecialchars($user['nama']) ?></h4>
                     <p class="text-secondary"><?= htmlspecialchars($user['email']) ?></p>
                     <hr>

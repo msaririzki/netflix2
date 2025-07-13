@@ -7,7 +7,7 @@ require_once __DIR__ . '/../config/database.php';
 $genres_menu_result = $connect->query("SELECT id, nama FROM genres ORDER BY nama ASC");
 
 // Logika baru untuk memastikan path gambar selalu benar
-$profile_pic_path = '/assets/images/profiles/default.png'; // Path default
+$profile_pic_path = '/assets/images/profiles/default.jpeg'; // Path default
 if (isset($_SESSION['user_profile_picture']) && !empty($_SESSION['user_profile_picture'])) {
     $user_pic = $_SESSION['user_profile_picture'];
     // Tambahkan slash '/' di depan jika belum ada

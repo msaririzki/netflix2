@@ -54,3 +54,21 @@
     border-radius: 5px;
     background-color: #333;
 }
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* --- Membuat Sidebar Admin Tetap di Tempat (Fixed) --- */
+#sidebar-wrapper {
+    position: fixed; /* Kunci utama agar sidebar diam di tempat */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Pastikan tingginya selalu 100% dari layar */
+}
+
+#page-content-wrapper {
+    /* Beri margin kiri seukuran lebar sidebar agar konten tidak tertutup */
+    margin-left: 250px; 
+}

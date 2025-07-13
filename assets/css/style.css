@@ -473,3 +473,49 @@ body {
     padding: 6px 12px;
     font-weight: 500;
 }
+
+
+
+/* Reaction Button Group Styling */
+.reaction-group {
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #333;
+}
+.reaction-group .btn {
+    border-radius: 0;
+    border: none !important;
+    background-color: transparent !important;
+    color: #ccc;
+    border-right: 1px solid #333 !important;
+}
+.reaction-group .btn:last-child {
+    border-right: none !important;
+}
+.reaction-group .btn:hover {
+    background-color: #333 !important;
+    color: white;
+}
+.reaction-group .btn.active {
+    background-color: #4d4d4d !important;
+    color: white;
+}
+
+
+
+/* --- Perbaikan Warna Placeholder untuk Search Bar --- */
+.form-control::placeholder {
+  color: #888; /* Warna abu-abu terang */
+  opacity: 1; /* Pastikan tidak transparan */
+}
+
+.form-control::-moz-placeholder {
+  color: #888;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder {
+  color: #888;
+}
+

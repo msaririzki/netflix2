@@ -1,0 +1,8 @@
+# Abaikan folder backup
+/backup/
+
+# Abaikan folder video (praktik terbaik)
+/assets/videos/
+
+# Abaikan file konfigurasi database yang sensitif
+/config/database.php

@@ -1,45 +1,38 @@
 <?php
-// Selalu mulai session di bagian paling atas
 session_start();
-
-// Set header ke JSON agar browser tahu format responsenya
-header('Content-Type: application/json');
-
-// Panggil file koneksi database
 require_once 'config/database.php';
 
-// Cek apakah user sudah login dan ada video_id yang dikirim
+// 1. Pastikan user sudah login dan video_id dikirim
 if (!isset($_SESSION['user_id']) || !isset($_POST['video_id'])) {
-    // Jika tidak, kirim pesan error yang jelas dan hentikan skrip
+    // Keluar jika tidak ada data yang diperlukan, bisa juga kirim response error
     http_response_code(400); // Bad Request
-    echo json_encode(['status' => 'error', 'message' => 'Permintaan tidak valid. User ID atau Video ID tidak ada.']);
-    exit;
+    exit('User not logged in or video ID not provided.');
 }
 
-// Ambil data dan pastikan tipenya benar
+// 2. Ambil data
 $user_id = (int)$_SESSION['user_id'];
 $video_id = (int)$_POST['video_id'];
+$watch_date = date('Y-m-d H:i:s'); // Tanggal dan waktu saat ini
 
-// Logika baru: Selalu INSERT baris baru setiap kali skrip ini dipanggil
-$stmt = $connect->prepare("INSERT INTO history (user_id, video_id) VALUES (?, ?)");
+// 3. Gunakan "UPSERT" (UPDATE atau INSERT)
+// Ini akan mencoba INSERT. Jika sudah ada (berdasarkan UNIQUE key), maka akan UPDATE.
+$stmt = $connect->prepare("
+    INSERT INTO history (user_id, video_id, terakhir_nonton)
+    VALUES (?, ?, ?)
+    ON DUPLICATE KEY UPDATE terakhir_nonton = ?
+");
 
-// Cek jika prepare statement gagal
-if ($stmt === false) {
-    http_response_code(500); // Internal Server Error
-    echo json_encode(['status' => 'error', 'message' => 'Gagal mempersiapkan query database.']);
-    exit;
-}
+// Bind parameter: integer, integer, string, string
+$stmt->bind_param("isss", $user_id, $video_id, $watch_date, $watch_date);
 
-$stmt->bind_param("ii", $user_id, $video_id);
-
-// Eksekusi query dan kirim respons sesuai hasilnya
+// 4. Eksekusi query
 if ($stmt->execute()) {
-    echo json_encode(['status' => 'success', 'message' => 'Riwayat tontonan berhasil dicatat.']);
+    http_response_code(200); // OK
+    echo "History recorded.";
 } else {
-    http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan riwayat: ' . $stmt->error]);
+    http_response_code(500); // Internal Server Error
+    echo "Failed to record history.";
 }
 
 $stmt->close();
 $connect->close();
-?>
